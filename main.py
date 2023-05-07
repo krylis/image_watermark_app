@@ -5,7 +5,12 @@ from PIL import Image, ImageTk
 
 
 def get_image_file():
-    pass
+    filepath = filedialog.askopenfilename()
+    image = Image.open(filepath)
+    resized_image = image.resize((350, 300))
+    photo = ImageTk.PhotoImage(resized_image)
+    img_label.config(image=photo)
+    img_label.image = photo
 
 
 def add_watermark():
@@ -22,7 +27,7 @@ mainframe.pack()
 img_label = ttk.Label(mainframe, text='Your Image Here', relief='groove', borderwidth=1, padding=(10, 5))
 img_label.pack(pady=5)
 
-choose_img_btn = ttk.Button(mainframe, text='Choose Image', command=get_image_file)
+choose_img_btn = ttk.Button(mainframe, text='Select Image', command=get_image_file)
 choose_img_btn.pack(pady=5)
 
 watermark_text = StringVar()
