@@ -1,21 +1,35 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw, ImageFont
 
 
 def get_image_file():
+    global filepath
     filepath = filedialog.askopenfilename()
     image = Image.open(filepath)
     resized_image = image.resize((350, 300))
-    photo = ImageTk.PhotoImage(resized_image)
+    update_image_label(resized_image)
+
+
+def update_image_label(image):
+    photo = ImageTk.PhotoImage(image)
     img_label.config(image=photo)
     img_label.image = photo
 
 
 def add_watermark():
-    pass
+    if filepath is not None:
+        image = Image.open(filepath)
+        text_font = ImageFont.truetype("arial.ttf", 26)
+        text_to_add = watermark_text.get()
+        resized_image = image.resize((350, 300))
+        edit_image = ImageDraw.Draw(resized_image)
+        edit_image.text((100, 270), text_to_add, 'red', font=text_font)
+        update_image_label(resized_image)
 
+
+filepath = None
 
 root = Tk()
 root.title("Image Watermarking Application")
